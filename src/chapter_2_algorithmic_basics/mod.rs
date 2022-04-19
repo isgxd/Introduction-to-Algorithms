@@ -1,6 +1,7 @@
 //! 第2章 算法基础
 
 mod insertion_sort;
+mod merge;
 
 /// 判断数组是否按从小到大的顺序排列。
 fn is_sorted(input: &[i32]) -> bool {
