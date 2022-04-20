@@ -1,6 +1,7 @@
 #![cfg_attr(debug_assertions, allow(dead_code))]
 
 mod chapter_2_algorithmic_basics;
+mod chapter_4_divide_and_conquer;
 
 #[cfg(test)]
 mod tests {
