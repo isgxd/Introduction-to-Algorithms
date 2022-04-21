@@ -36,7 +36,7 @@ fn sort(input: &mut [i32], lo: usize, mid: usize, hi: usize) {
 
 #[cfg(test)]
 mod tests {
-    use crate::chapter_2_algorithmic_basics::{is_sorted, merge::*};
+    use crate::{chapter_2_algorithmic_basics::merge::*, is_sorted};
 
     #[test]
     fn sort_test() {

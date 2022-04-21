@@ -17,7 +17,7 @@ fn sort(input: &mut [i32]) {
 
 #[cfg(test)]
 mod tests {
-    use crate::chapter_2_algorithmic_basics::{insertion_sort::sort, is_sorted};
+    use crate::{chapter_2_algorithmic_basics::insertion_sort::sort, is_sorted};
 
     #[test]
     fn test() {
