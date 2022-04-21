@@ -16,7 +16,7 @@ fn build_max_heap(a: &mut [i32]) {
     }
 }
 
-fn max_heapify(a: &mut [i32], i: usize) {
+pub(crate) fn max_heapify(a: &mut [i32], i: usize) {
     let l = left(i);
     let r = right(i);
     let mut largest = if l < a.len() && a[l] > a[i] { l } else { i };
@@ -29,7 +29,7 @@ fn max_heapify(a: &mut [i32], i: usize) {
     }
 }
 
-fn parent(i: usize) -> usize {
+pub(crate) fn parent(i: usize) -> usize {
     i / 2
 }
 
