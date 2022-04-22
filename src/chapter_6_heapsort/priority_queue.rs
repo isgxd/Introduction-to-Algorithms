@@ -22,16 +22,15 @@ fn heap_increase_key(a: &mut [i32], mut i: usize, key: i32) {
     }
 }
 
-/// 提取堆的最大值，缩小堆的规模。
-fn heap_extract_max(a: &mut [i32]) -> i32 {
+/// 提取堆的最大值，缩小规模。
+fn heap_extract_max(a: &mut Vec<i32>) -> i32 {
     if a.is_empty() {
         panic!("heap underflow");
     }
 
     let max = a[0];
-    let last = a.len() - 1;
-    a[0] = a[last];
-    max_heapify(&mut a[..last], 0);
+    a[0] = a.pop().unwrap();
+    max_heapify(&mut a[..], 0);
 
     max
 }
