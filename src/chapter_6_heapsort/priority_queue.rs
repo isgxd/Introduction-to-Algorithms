@@ -39,3 +39,40 @@ fn heap_extract_max(a: &mut Vec<i32>) -> i32 {
 fn heap_maximum(a: &[i32]) -> i32 {
     a[0]
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn heap_extract_max_test() {
+        let mut buf = vec![22, 18, 19, 9, 6, 12, 8];
+        assert_eq!(7, buf.len());
+
+        let val = heap_extract_max(&mut buf);
+        assert_eq!(22, val);
+        assert_eq!(6, buf.len());
+
+        let expect = [19, 18, 12, 9, 6, 8];
+        assert_eq!(&expect, &buf[..])
+    }
+
+    #[test]
+    fn heap_increase_key_test() {
+        let mut buf = [9, 3, 2];
+        heap_increase_key(&mut buf, 2, 10);
+        assert_eq!(&[10, 3, 9], &buf);
+    }
+
+    #[test]
+    fn max_heap_insert_test() {
+        let mut buf = vec![22, 18, 19, 9, 6, 12, 8];
+        assert_eq!(7, buf.len());
+
+        max_heap_insert(&mut buf, 13);
+        assert_eq!(8, buf.len());
+
+        let val = [22, 18, 19, 13, 6, 12, 8, 9];
+        assert_eq!(&val, &buf[..]);
+    }
+}
