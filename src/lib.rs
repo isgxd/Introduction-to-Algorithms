@@ -4,6 +4,7 @@ mod chapter_2_algorithmic_basics;
 mod chapter_4_divide_and_conquer;
 mod chapter_6_heapsort;
 mod chapter_7_quicksort;
+mod chapter_8_sorting_in_linear_time;
 
 /// 判断数组是否按从小到大的顺序排列。
 fn is_sorted(input: &[i32]) -> bool {
