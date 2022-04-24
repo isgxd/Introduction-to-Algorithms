@@ -1,6 +1,6 @@
 //! 插入排序。
 
-fn sort(input: &mut [i32]) {
+pub(crate) fn sort(input: &mut [i32]) {
     for j in 1..input.len() {
         let key = input[j];
 
