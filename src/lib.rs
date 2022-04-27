@@ -7,6 +7,7 @@ mod chapter_7_quicksort;
 mod chapter_8_sorting_in_linear_time;
 mod chapter_9_medians_and_order_statistics;
 mod random;
+mod chapter_10_elementary_data_structures;
 
 /// 判断数组是否按从小到大的顺序排列。
 fn is_sorted(input: &[i32]) -> bool {
