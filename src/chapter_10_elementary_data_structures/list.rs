@@ -1,6 +1,6 @@
 //! 双向链表。
 
-use std::ptr;
+use std::ptr::NonNull;
 
 struct List {
     head: Link,
@@ -9,66 +9,60 @@ struct List {
 impl List {
     /// 创建一个新链表。
     fn new() -> Self {
-        Self {
-            head: ptr::null_mut(),
-        }
+        Self { head: None }
     }
 
     /// 搜索指定键的节点。
-    fn search(&self, key: i32) -> Option<&Node> {
-        let mut x = self.head;
+    fn search(&self, key: i32) -> Link {
         unsafe {
-            while !x.is_null() && (*x).key != key {
-                x = (*x).next;
+            let mut x = self.head;
+            while let Some(n) = x {
+                if key != (*n.as_ptr()).key {
+                    x = (*n.as_ptr()).next;
+                } else {
+                    break;
+                }
             }
-            x.as_ref()
+            x
         }
     }
 
     /// 在顶端插入一个新节点。
     fn insert(&mut self, key: i32) {
-        let mut x = Box::into_raw(Box::new(Node {
-            key,
-            prev: ptr::null_mut(),
-            next: self.head,
-        }));
+        let x = Some(
+            Box::leak(Box::new(Node {
+                key,
+                prev: None,
+                next: self.head,
+            }))
+            .into(),
+        );
         unsafe {
-            if !self.head.is_null() {
-                (*self.head).prev = x;
+            if let Some(h) = self.head {
+                (*h.as_ptr()).prev = x;
             }
-            self.head = x;
-            (*x).prev = ptr::null_mut();
         }
+        self.head = x;
     }
 
     /// 删除指定节点。
-    fn delete(&mut self, key: i32) -> Option<Node> {
+    fn delete(&mut self, mut node: NonNull<Node>) {
         unsafe {
-            let mut x = self.head;
-            while !x.is_null() && (*x).key != key {
-                x = (*x).next;
-            }
-
-            if x.is_null() {
-                return None;
-            }
-
-            if (*x).prev.is_null() {
-                self.head = (*x).next;
+            let node = node.as_mut();
+            if let Some(n) = node.prev {
+                (*n.as_ptr()).next = node.next;
             } else {
-                (*(*x).prev).next = (*x).next;
+                self.head = node.next;
             }
 
-            if !(*x).next.is_null() {
-                (*(*x).next).prev = (*x).prev;
+            if let Some(n) = node.next {
+                (*n.as_ptr()).prev = node.prev;
             }
-
-            Some(*Box::from_raw(x))
         }
     }
 }
 
-type Link = *mut Node;
+type Link = Option<NonNull<Node>>;
 
 struct Node {
     key: i32,
@@ -89,11 +83,11 @@ mod tests {
 
         let mid = list.search(3);
         assert!(mid.is_some());
-        assert_eq!(3, mid.unwrap().key);
+        mid.map(|n| unsafe {
+            assert_eq!(3, (*n.as_ptr()).key);
 
-        let n = list.delete(3);
-        assert!(n.is_some());
-        assert_eq!(3, n.unwrap().key);
-        assert!(list.search(3).is_none());
+            list.delete(n);
+            assert!(list.search(3).is_none());
+        });
     }
 }
