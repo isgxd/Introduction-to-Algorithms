@@ -139,7 +139,7 @@ impl BinarySearchTree {
                 self.transplant(z, (*z).left);
             } else {
                 let y = self.minimum((*z).right);
-                if (*y).parent != z {
+                if *((*y).parent) != *z {
                     self.transplant(y, (*y).right);
                     (*y).right = (*z).right;
                     (*(*y).right).parent = y;
