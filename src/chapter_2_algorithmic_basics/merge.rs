@@ -14,24 +14,28 @@ fn merge_sort(input: &mut [i32]) {
 
 /// 假定：lo..mid、mid..hi 的部分已经排序。
 fn merge(input: &mut [i32], lo: usize, mid: usize, hi: usize) {
-    let mut left = input[lo..mid].to_vec();
-    let mut right = input[mid..hi].to_vec();
-
-    // 哨兵，不会两个同时出现。
-    left.push(i32::MAX);
-    right.push(i32::MAX);
+    let left = copy_from(&input[lo..mid]);
+    let right = copy_from(&input[mid..hi]);
 
     let mut i = 0;
     let mut j = 0;
-    for r in lo..hi {
+    for k in lo..hi {
         if left[i] <= right[j] {
-            input[r] = left[i];
+            input[k] = left[i];
             i += 1;
         } else {
-            input[r] = right[j];
+            input[k] = right[j];
             j += 1;
         }
     }
+}
+
+// 从切片中拷贝全部元素，并在最后添加一个哨兵。
+fn copy_from(input: &[i32]) -> Vec<i32> {
+    let mut buf = Vec::with_capacity(input.len() + 1);
+    buf.extend(input.iter());
+    buf.push(i32::MAX); // 哨兵。
+    buf
 }
 
 #[cfg(test)]
